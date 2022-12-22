@@ -2,10 +2,10 @@ from turtle import Screen
 from player import Player
 from enemy import Enemy
 from bullet import Bullet
+from dashboard import Dashboard
 from collision import Collision
 from functools import partial
 import time
-import threading
 
 delay = None
 to_remove = []
@@ -23,6 +23,8 @@ player = Player()
 bullet = Bullet()
 enemy = Enemy()
 collision = Collision()
+dashboard = Dashboard()
+dashboard.display()
 enemy.create_enemy()
 screen.listen()
 screen.onkeypress(key="d", fun=player.move_left)
@@ -33,18 +35,37 @@ game = True
 while game:
     screen.update()
     bullet.shoot()
+    if len(enemy.enemies) == 0:
+        enemy.enemy_move_speed += .5
+        enemy.count = 0
+        dashboard.level += 1
+        enemy.create_enemy()
+        dashboard.update()
+    if dashboard.level > 3:
+        dashboard.victory()
+        game = False
+    if len(dashboard.health_bar) == 0:
+        dashboard.game_over()
+        game = False
     enemy.enemy_movements()
     enemy.enemy_create_bullet()
     enemy.enemy_shoot()
     pos = (player.xcor(), player.ycor() + 25)
     screen.onkeypress(key="space", fun=partial(bullet.create_bullet, pos))
     enemy_hit_by_bullet = collision.is_enemy_hit(bullet, enemy)
+    enemy_bullet_used = collision.is_player_hit(enemy, player)
     if enemy_hit_by_bullet:
         enemy.crash(enemy_hit_by_bullet[0])
         bullet.remove_bullet(enemy_hit_by_bullet[1])
         to_remove.append(enemy_hit_by_bullet[0])
         delay = round(time.time() + .5, 1)
+    if enemy_bullet_used:
+        enemy.remove_bullet(enemy_bullet_used)
+        dashboard.minus_health()
     if delay == round(time.time(), 1):
         enemy.remove_crash_enemy(to_remove)
-    # if collision.collision_enemy_player(enemy, player):
+    if collision.collision_enemy_player(enemy, player):
+        dashboard.game_over()
+        game = False
+
 screen.exitonclick()

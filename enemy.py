@@ -4,8 +4,6 @@ import random
 ENEMY_STARTING_POS = [(200, 180), (0, 180), (100, 280),
                       (-100, 280), (-200, 180)]
 
-ENEMY_MOVE_SPEED = .2
-
 
 class Enemy:
 
@@ -13,6 +11,7 @@ class Enemy:
         self.enemies = []
         self.bullets = []
         self.count = 0
+        self.enemy_move_speed = .5
 
     def create_enemy(self):
         for e in ENEMY_STARTING_POS:
@@ -28,7 +27,7 @@ class Enemy:
                 enemy.goto(enemy.xcor(), enemy.ycor() - 60)
                 self.count = 0
         for enemy in self.enemies:
-            enemy.forward(ENEMY_MOVE_SPEED)
+            enemy.forward(self.enemy_move_speed)
             if enemy.xcor() > 360 or enemy.xcor() < -360:
                 self.turn()
                 self.count += 1
@@ -60,6 +59,10 @@ class Enemy:
                 b.hideturtle()
                 self.bullets.remove(b)
             b.forward(.5)
+
+    def remove_bullet(self, e):
+        self.bullets.remove(e)
+        e.goto(1000, 1000)
 
     def crash(self, e):
         e.shape("pictures/crash.gif")

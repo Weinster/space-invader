@@ -1,6 +1,6 @@
 from turtle import Turtle
-
-BULLET_SPEED = 1
+import ctypes
+BULLET_SPEED = 1.5
 
 
 class Bullet:
@@ -8,10 +8,12 @@ class Bullet:
     def __init__(self):
         self.bullets = []
         self.can_shoot = True
+        self.mci = ctypes.windll.winmm.mciSendStringW
 
     def create_bullet(self, pos):
         if self.can_shoot:
             new_bullet = Turtle()
+            self.bullet_sound()
             new_bullet.penup()
             new_bullet.shape("pictures/bullet.gif")
             new_bullet.setheading(90)
@@ -29,3 +31,9 @@ class Bullet:
 
     def remove_bullet(self, b):
         b.goto(0, 360)
+
+    def bullet_sound(self):
+        command = 'Open "sounds/heat-vision.wav" type mpegvideo alias laser'
+        self.mci = (command, 0, 0, 0)
+        command = 'Play laser from 0'
+        self.mci = (command, 0, 0, 0)
