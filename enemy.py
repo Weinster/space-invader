@@ -1,5 +1,6 @@
 from turtle import Turtle
 import random
+import ctypes
 
 ENEMY_STARTING_POS = [(200, 180), (0, 180), (100, 280),
                       (-100, 280), (-200, 180)]
@@ -12,6 +13,7 @@ class Enemy:
         self.bullets = []
         self.count = 0
         self.enemy_move_speed = .5
+        self.mci = ctypes.windll.winmm.mciSendStringW
 
     def create_enemy(self):
         for e in ENEMY_STARTING_POS:
@@ -66,8 +68,20 @@ class Enemy:
 
     def crash(self, e):
         e.shape("pictures/crash.gif")
+        self.crash_sound()
         self.enemies.remove(e)
 
     def remove_crash_enemy(self, enemies):
         for enemy in enemies:
             enemy.goto(1000, 1000)
+
+    def crash_sound(self):
+        command = 'Open "sounds/Explosion7.wav" type mpegvideo alias explo'
+        self.mci(command, 0, 0, 0)
+        command = 'Play explo from 0'
+        self.mci(command, 0, 0, 0)
+
+    def enemy_extra_bullet_remove(self):
+        for bullets in self.bullets:
+            bullets.goto(-1000, -1000)
+        self.bullets.clear()

@@ -25,6 +25,11 @@ class Dashboard:
     def minus_health(self):
         self.health_bar[-1].goto(1000, 1000)
         self.health_bar.pop()
+        for h in self.health_bar:
+            if len(self.health_bar) >= 2 and len(self.health_bar) < 4:
+                h.color("orange")
+            elif len(self.health_bar) < 2:
+                h.color("red")
 
     def display(self):
         display = Turtle()

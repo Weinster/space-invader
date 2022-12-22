@@ -1,6 +1,6 @@
 from turtle import Turtle
 import ctypes
-BULLET_SPEED = 1.5
+BULLET_SPEED = 2
 
 
 class Bullet:
@@ -13,12 +13,12 @@ class Bullet:
     def create_bullet(self, pos):
         if self.can_shoot:
             new_bullet = Turtle()
-            self.bullet_sound()
             new_bullet.penup()
             new_bullet.shape("pictures/bullet.gif")
             new_bullet.setheading(90)
             new_bullet.goto(pos)
             self.bullets.append(new_bullet)
+            self.bullet_sound()
 
     def shoot(self):
         for b in self.bullets:
@@ -34,6 +34,6 @@ class Bullet:
 
     def bullet_sound(self):
         command = 'Open "sounds/heat-vision.wav" type mpegvideo alias laser'
-        self.mci = (command, 0, 0, 0)
+        self.mci(command, 0, 0, 0)
         command = 'Play laser from 0'
-        self.mci = (command, 0, 0, 0)
+        self.mci(command, 0, 0, 0)

@@ -36,11 +36,14 @@ while game:
     screen.update()
     bullet.shoot()
     if len(enemy.enemies) == 0:
+        time.sleep(0.5)
+        enemy.enemy_extra_bullet_remove()
         enemy.enemy_move_speed += .5
         enemy.count = 0
         dashboard.level += 1
         enemy.create_enemy()
-        dashboard.update()
+        if dashboard.level < 4:
+            dashboard.update()
     if dashboard.level > 3:
         dashboard.victory()
         game = False
