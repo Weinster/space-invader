@@ -1,6 +1,6 @@
 from turtle import Turtle
 
-BULLET_SPEED = 3
+BULLET_SPEED = 1
 
 
 class Bullet:
@@ -26,3 +26,6 @@ class Bullet:
             else:
                 self.can_shoot = False
             b.forward(BULLET_SPEED)
+
+    def remove_bullet(self, b):
+        b.goto(0, 360)
