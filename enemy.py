@@ -16,6 +16,7 @@ class Enemy:
         self.mci = ctypes.windll.winmm.mciSendStringW
 
     def create_enemy(self):
+        """create enemies"""
         for e in ENEMY_STARTING_POS:
             new_enemy = Turtle()
             new_enemy.penup()
@@ -24,6 +25,7 @@ class Enemy:
             self.enemies.append(new_enemy)
 
     def enemy_movements(self):
+        """move enemies back and forth"""
         if self.count == 4:
             for enemy in self.enemies:
                 enemy.goto(enemy.xcor(), enemy.ycor() - 60)
@@ -35,10 +37,12 @@ class Enemy:
                 self.count += 1
 
     def turn(self):
+        """make enemies turn after hitting the wall"""
         for enemy in self.enemies:
             enemy.right(180)
 
     def enemy_create_bullet(self):
+        """spawn random bullet on random enemy"""
         random_spawn = random.randint(1, 500)
         if random_spawn == 1:
             try:
@@ -56,6 +60,7 @@ class Enemy:
                 self.bullets.append(new_bullet)
 
     def enemy_shoot(self):
+        """make the bullets go forward"""
         for b in self.bullets:
             if b.ycor() < -360:
                 b.hideturtle()
@@ -63,25 +68,30 @@ class Enemy:
             b.forward(.5)
 
     def remove_bullet(self, e):
+        """remove the bullet after hitting player"""
         self.bullets.remove(e)
         e.goto(1000, 1000)
 
     def crash(self, e):
+        """crash sound if enemy is hit"""
         e.shape("pictures/crash.gif")
         self.crash_sound()
         self.enemies.remove(e)
 
     def remove_crash_enemy(self, enemies):
+        """move enemy away from screen after scrash"""
         for enemy in enemies:
             enemy.goto(1000, 1000)
 
     def crash_sound(self):
+        """play crash sound"""
         command = 'Open "sounds/Explosion7.wav" type mpegvideo alias explo'
         self.mci(command, 0, 0, 0)
         command = 'Play explo from 0'
         self.mci(command, 0, 0, 0)
 
     def enemy_extra_bullet_remove(self):
+        """remove bullets left when the round ends"""
         for bullets in self.bullets:
             bullets.goto(-1000, -1000)
         self.bullets.clear()

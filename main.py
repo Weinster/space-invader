@@ -34,7 +34,6 @@ screen.onkeypress(key="A", fun=player.move_right)
 game = True
 while game:
     screen.update()
-    bullet.shoot()
     if len(enemy.enemies) == 0:
         time.sleep(0.5)
         enemy.enemy_extra_bullet_remove()
@@ -55,17 +54,19 @@ while game:
     enemy.enemy_shoot()
     pos = (player.xcor(), player.ycor() + 25)
     screen.onkeypress(key="space", fun=partial(bullet.create_bullet, pos))
+    bullet.shoot()
     enemy_hit_by_bullet = collision.is_enemy_hit(bullet, enemy)
     enemy_bullet_used = collision.is_player_hit(enemy, player)
     if enemy_hit_by_bullet:
         enemy.crash(enemy_hit_by_bullet[0])
         bullet.remove_bullet(enemy_hit_by_bullet[1])
         to_remove.append(enemy_hit_by_bullet[0])
-        delay = round(time.time() + .5, 1)
+        delay = round(time.time() + .5, 1)  # set a delay after crash
     if enemy_bullet_used:
         enemy.remove_bullet(enemy_bullet_used)
         dashboard.minus_health()
     if delay == round(time.time(), 1):
+        # move enemy away after delay is satisfied
         enemy.remove_crash_enemy(to_remove)
     if collision.collision_enemy_player(enemy, player):
         dashboard.game_over()

@@ -14,6 +14,7 @@ class Dashboard:
         self.current = None
 
     def healthbar(self):
+        """create health bars"""
         for health in HEALTH_BAR:
             bar = Turtle()
             bar.color("green")
@@ -23,6 +24,7 @@ class Dashboard:
             self.health_bar.append(bar)
 
     def minus_health(self):
+        """reduce the health of the player"""
         self.health_bar[-1].goto(1000, 1000)
         self.health_bar.pop()
         for h in self.health_bar:
@@ -32,6 +34,7 @@ class Dashboard:
                 h.color("red")
 
     def display(self):
+        """display texts on screen"""
         display = Turtle()
         display.color("white")
         display.hideturtle()
@@ -42,10 +45,12 @@ class Dashboard:
         self.current = display
 
     def update(self):
+        """update display"""
         self.current.clear()
         self.display()
 
     def victory(self):
+        """victory text and victory sound"""
         g_over = Turtle()
         g_over.color("yellow")
         g_over.hideturtle()
@@ -55,6 +60,7 @@ class Dashboard:
         PlaySound("sounds/win.wav", SND_ASYNC)
 
     def game_over(self):
+        """gameover texts and gameover sound"""
         g_over = Turtle()
         g_over.color("red")
         g_over.hideturtle()
