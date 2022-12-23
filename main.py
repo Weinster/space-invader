@@ -37,9 +37,9 @@ while game:
     if len(enemy.enemies) == 0:
         time.sleep(0.5)
         enemy.enemy_extra_bullet_remove()
-        enemy.enemy_move_speed += .5
-        enemy.count = 0
-        dashboard.level += 1
+        enemy.enemy_move_speed += .5  # make enemy faster next level
+        enemy.count_number_of_turns = 0  # reset number of count
+        dashboard.level += 1  # increase level
         enemy.create_enemy()
         if dashboard.level < 4:
             dashboard.update()

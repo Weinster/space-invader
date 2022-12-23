@@ -11,7 +11,7 @@ class Enemy:
     def __init__(self):
         self.enemies = []
         self.bullets = []
-        self.count = 0
+        self.count_number_of_turns = 0
         self.enemy_move_speed = .5
         self.mci = ctypes.windll.winmm.mciSendStringW
 
@@ -26,15 +26,15 @@ class Enemy:
 
     def enemy_movements(self):
         """move enemies back and forth"""
-        if self.count == 4:
+        if self.count_number_of_turns == 4:
             for enemy in self.enemies:
                 enemy.goto(enemy.xcor(), enemy.ycor() - 60)
-                self.count = 0
+                self.count_number_of_turns = 0
         for enemy in self.enemies:
             enemy.forward(self.enemy_move_speed)
             if enemy.xcor() > 360 or enemy.xcor() < -360:
                 self.turn()
-                self.count += 1
+                self.count_number_of_turns += 1
 
     def turn(self):
         """make enemies turn after hitting the wall"""
