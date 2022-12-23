@@ -10,6 +10,7 @@ import time
 delay = None
 to_remove = []
 screen = Screen()
+screen.title("Space Invader")
 screen.bgpic("pictures/bg.GIF")
 screen.register_shape(
     "pictures/spaceship.gif")
